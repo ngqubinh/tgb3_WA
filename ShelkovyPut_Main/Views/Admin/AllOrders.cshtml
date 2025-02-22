@@ -1,0 +1,85 @@
+﻿@using Application.ViewModels.Order
+@using Domain.Models.Management
+@inject Infrastructure.Services.OrderStatusNameTranslateService TranslateService;
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="text-center mb-4">Quản lý đơn hàng</h4>
+        <a asp-action="Dashboard" class="btn btn-secondary">Trở về</a>
+    </div>
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Ngày đặt</th>
+                    <th>Tên khách hàng</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Trạng thái thanh toán</th>
+                    <th>Trạng thái đơn hàng</th>
+                    <th>Công cụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.CreatedDate.ToString("dd-MM-yyyy")</td>
+                        <td>@order.Name</td>
+                        <td>@order.Email</td>
+                        <td>@order.MobileNumber</td>
+                        <td>@order.Addresses</td>
+                        <td>@order.PaymentMethod | @(order.IsPaid ? "Đã thanh toán" : "Chưa thanh toán")</td>
+                        <td>@TranslateService.Translate(order.OrderStatus.StatusName)</td>
+                        <td>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal-@order.Id" class="btn btn-primary btn-sm">
+                                Chi tiết
+                            </button>
+                            <a asp-action="UpdateOrderStatus" asp-route-orderId="@order.Id" class="btn btn-info btn-sm mt-1">Cập nhật trạng thái</a>
+                            <a asp-action="TogglePaymentStatus" asp-route-orderId="@order.Id" class="btn btn-warning btn-sm mt-1">Xác nhận thanh toán</a>
+
+                            @* Modal for Order Detail *@
+                            <div class="modal fade" id="modal-@order.Id" tabindex="-1" aria-labelledby="modalLabel-@order.Id" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel-@order.Id">Chi tiết đơn hàng</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @await Html.PartialAsync("/Views/Admin/_OrderDetailModal.cshtml", new OrderDetailResponse { DivId = order.Id.ToString(), OrderDetails = order.OrderDetails })
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            Chưa có đơn hàng nào trên hệ thống
+        </div>
+    }
+</div>
+
+<style>
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+</style>

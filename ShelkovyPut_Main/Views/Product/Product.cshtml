@@ -1,0 +1,142 @@
+﻿@using Domain.Models.Management
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Quản lý sản phẩm</h1>
+    <div class="text-center mb-4">
+        <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-primary">Trở về</a>
+        <a asp-action="CreateProduct" class="btn btn-success">Thêm mới</a>
+        <a asp-action="ProductForUser" class="btn btn-info">Trang sản phẩm</a>
+    </div>
+    <div class="product-table-container">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Size</th>
+                    <th>Hình ảnh</th>
+                    <th>Loại</th>
+                    <th>Ngày tạo</th>
+                    <th>Người tạo</th>
+                    <th>Công cụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Size.Name)</td>
+                        <td style="cursor: pointer;">
+                            @if (!string.IsNullOrEmpty(item.Pictures))
+                            {
+                                <div class="image-container text-center">
+                                    @{
+                                        var filePaths = item.Pictures.Split(',');
+                                        var firstImage = filePaths.FirstOrDefault();
+                                    }
+                                    <img src="@firstImage" class="img-thumbnail" alt="@item.ProductName" />
+                                </div>
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Category.CategoryName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.User!.FullName)</td>
+                        <td class="action-buttons">
+                            <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Chỉnh sửa</a>
+                            @* <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a> *@
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-table-container {
+        margin: 20px auto;
+        max-width: 1200px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .img-thumbnail {
+        max-width: 100px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .action-buttons a {
+        margin: 0 5px;
+    }
+
+    .btn-primary, .btn-info, .btn-danger {
+        margin-top: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+</style>

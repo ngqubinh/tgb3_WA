@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>User Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>User Chat</h1>
+    <div id="chatBoxUser"></div>
+    <script>
+        var userID = '@ViewBag.UserEmail'; // User email
+        var connection = new WebSocket("ws://localhost:8080/ws?userID=" + encodeURIComponent(userID) + "&role=user");
+
+        connection.onopen = function() {
+            console.log("Connected to chat server as user " + userID);
+        };
+
+        connection.onmessage = function(event) {
+            var message = event.data;
+            $("#chatBoxUser").append("<p>" + message + "</p>");
+        };
+
+        function sendMessage(message) {
+            if (connection.readyState === WebSocket.OPEN) {
+                connection.send(message);
+                console.log("Message sent: " + message);
+            } else {
+                console.log("WebSocket not open");
+            }
+        }
+
+        $("#sendButton").click(function() {
+            var message = $("#message").val();
+            if (message) {
+                sendMessage(message);
+                $("#message").val("").focus();
+            }
+        });
+    </script>
+    <input type="text" id="message" placeholder="Enter your message" />
+    <button id="sendButton">Send</button>
+</body>
+</html>

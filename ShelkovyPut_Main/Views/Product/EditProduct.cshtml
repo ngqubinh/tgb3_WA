@@ -1,0 +1,221 @@
+﻿@using Application.DTOs.Request.Management;
+@model CreateProductRequest
+
+@{
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+}
+
+<div class="navbar-container">
+</div>
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5">
+                <!--end of col-->
+            </div>
+            <!--end of row-->
+            <div class="row flex-md-row card card-md">
+                <div class="card-body bg-secondary">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Chỉnh sửa sản phẩm</h1>
+                        <span>Cập nhật lại thông tin sản phẩm</span>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <form method="post" asp-action="EditProduct" enctype="multipart/form-data">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="UserId" />
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="ProductName">Tên sản phẩm</label>
+                                        <input asp-for="ProductName" class="form-control form-control-lg" placeholder="Tên..." />
+                                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="ProductPrice">Gía tiền</label>
+                                        <input asp-for="ProductPrice" class="form-control form-control-lg" placeholder="Gía..." />
+                                        <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="IsFeatured">Sản phẩm đặc trưng</label>
+                                        <input asp-for="IsFeatured" class="form-check-input" type="checkbox" />
+                                        <span asp-validation-for="IsFeatured" class="text-danger"></span>
+                                    </div>  
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="DiscountProductprice">Giá khuyến mãi</label>
+                                        <input asp-for="DiscountProductprice" class="form-control form-control-lg" placeholder="Gía giảm..." />
+                                        <span asp-validation-for="DiscountProductprice" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="Description">Mô tả</label>
+                                        <input asp-for="Description" class="form-control form-control-lg" placeholder="Mô tả...." />
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="PicturePaths">Pictures</label>
+                                        <input asp-for="PicturePaths" type="file" multiple class="form-control form-control-lg" onchange="previewImages(event)" />
+                                        <span asp-validation-for="PicturePaths" class="text-danger"></span>
+                                        <div id="imagePreviewContainer" class="mt-2"></div>
+                                        @if (Model.Pictures != null)
+                                        {
+                                            <div id="existingImageContainer" class="mt-2">
+                                                @foreach (var picture in Model.Pictures.Split(','))
+                                                {
+                                                    <img src="@picture" class="img-preview" />
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="CategoryId" class="control-label">Loại</label>
+                                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                                            <option>--Chọn--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="BrandId" class="control-label">Brand</label>
+                                        <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
+                                            <option>--Chọn--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label asp-for="BrandId" class="control-label">Size</label>
+                                        <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Sizes">
+                                            <option>--Chọn--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button class="btn btn-block btn-success btn-lg" type="submit">Cập nhật</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center mt-4">
+                                        <a href="@Url.Action("Product", "Product")" class="btn btn-secondary btn-lg">Quay lại</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of container-->
+    </section>
+    <!--end of section-->
+</div>
+
+@section Scripts {
+    <script>
+        function previewImages(event) {
+            var files = event.target.files;
+            var previewContainer = document.getElementById('imagePreviewContainer');
+            previewContainer.innerHTML = '';
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.type.match('image.*')) {
+                    var reader = new FileReader();
+
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            var img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'img-preview';
+                            previewContainer.appendChild(img);
+                        };
+                    })(file);
+
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+    </script>
+}
+
+<style>
+    .main-container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #343a40;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .form-group label {
+        font-weight: 600;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .card {
+        margin: 20px 0;
+    }
+
+    .card-body {
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #imagePreviewContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .img-preview {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #existingImageContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+        #existingImageContainer .img-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+</style>

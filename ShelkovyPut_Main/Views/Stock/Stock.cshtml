@@ -1,0 +1,138 @@
+﻿@using Application.DTOs.Response.Management
+@model IEnumerable<StockResponse>
+
+@{
+    ViewData["Title"] = "Kho hàng";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Quản lý kho hàng</h2>
+
+    <form asp-action="Stock" method="get" class="d-flex justify-content-center my-4 gap-2">
+        <input type="text" name="sTerm" class="form-control w-25" placeholder="Tìm kiếm..." />
+        <button type="submit" class="btn btn-primary">Tìm</button>
+        <a asp-action="Stock" asp-controller="Stock" class="btn btn-secondary">Xóa</a>
+        <a href="@Url.Action("Dashboard", "Admin")" class="btn btn-secondary">Quay lại</a>
+    </form>
+
+    <div class="table-responsive">
+        <form asp-action="UpdateStock" method="post">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Công cụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>
+                                <input type="number" name="Quantities[@item.ProductId]" class="form-control" value="@item.Quantity" min="0" />
+                            </td>
+                            <td>
+                                <a asp-action="ManangeStock" asp-controller="Stock" asp-route-productId="@item.ProductId" class="btn btn-info btn-sm">Cập nhật</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @* <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg">Cập nhật kho hàng</button>
+            </div> *@
+        </form>
+    </div>
+</div>
+
+<style>
+    .container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #343a40;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: #fff;
+    }
+
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
+
+    .d-flex {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .gap-2 {
+        gap: 10px !important;
+    }
+</style>

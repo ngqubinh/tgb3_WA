@@ -1,0 +1,69 @@
+@using Application.DTOs.Request.Management
+@model CheckoutRequest
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>Checkout</h2>
+<form asp-action="Checkout" method="post">
+    <div class="py-2">
+        <label asp-for="Name">Name*</label>
+        <input type="text" class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <label asp-for="Email">Email*</label>
+        <input type="text" class="form-control" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+    </div>
+
+    <div class="py-2">
+        <label asp-for="MobileNumber">MobileNumber*</label>
+        <input type="text" class="form-control" asp-for="MobileNumber" />
+        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <label asp-for="Address.Settlement">Địa chỉ giao hàng*</label>
+        <span>Vui lòng nhập phần thông tin này để chúng mình có thể giao hàng ạ!!!</span>
+        <textarea class="form-control" asp-for="Address.Settlement" rows="5"> </textarea>
+        <span asp-validation-for="Address.Settlement" class="text-danger"></span>
+    </div>    
+
+    <div class="py-2">
+        <label asp-for="Address.District">Huyện</label>
+        <textarea class="form-control" asp-for="Address.District" rows="5"> </textarea>
+        <span asp-validation-for="Address.District" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <label asp-for="Address.Province">Tỉnh thành</label>
+        <input type="text" class="form-control" asp-for="Address.Province" />
+        <span asp-validation-for="Address.Province" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <label asp-for="Address.City">Thành phố</label>
+        <textarea class="form-control" asp-for="Address.City" rows="5"> </textarea>
+        <span asp-validation-for="Address.City" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <span class="mr-2">Thanh Toán*</span>
+        <select asp-for="PaymentMethod" class="form-control">
+            <option value="">Select Payment Method</option>
+            @foreach (var method in Enum.GetValues(typeof(Domain.Models.Enum.PaymentMethods)))
+            {
+                <option value="@method.ToString()">@method.ToString()</option>
+
+            }
+        </select>
+        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+    </div>    
+
+    <div class="py-2">
+        <button type="submit" class="btn btn-info">Next</button>
+    </div>
+</form>

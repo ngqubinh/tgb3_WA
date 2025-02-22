@@ -1,0 +1,147 @@
+﻿@model Domain.Models.Management.Product
+
+@{
+    ViewData["Title"] = "Xóa sản phẩm";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="text-center mb-4">Xóa sản phẩm</h1>
+
+            <h3 class="text-center">Bạn có muốn xóa vĩnh viễn sản phẩm này không?</h3>
+            <div class="text-center mb-4">
+                <h4>@Model.ProductName</h4>
+            </div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Tên sản phẩm
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.ProductName
+                </dd>
+                <dt class="col-sm-2">
+                    Mô tả
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Description
+                </dd>
+                <dt class="col-sm-2">
+                    Gía tiền
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.ProductPrice
+                </dd>
+                <dt class="col-sm-2">
+                    Loại
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Category.CategoryName
+                </dd>
+                <dt class="col-sm-2">
+                    Brand
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Brands.BrandName
+                </dd>
+                @if (!string.IsNullOrEmpty(Model.Pictures))
+                {
+                    <dt class="col-sm-2">
+                        Hình ảnh
+                    </dt>
+                    <dd class="col-sm-10">
+                        <div class="image-container">
+                            @foreach (var picture in Model.Pictures.Split(','))
+                            {
+                                <img src="@picture" class="img-preview" alt="Product Image" />
+                            }
+                        </div>
+                    </dd>
+                }
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger btn-lg">Xóa</button>
+                    <a asp-action="Product" asp-controller="Product" class="btn btn-secondary btn-lg">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    h1, h3 {
+        color: #343a40;
+    }
+
+    h4 {
+        color: #007bff;
+        font-weight: 600;
+    }
+
+    dl.row {
+        margin-bottom: 1rem;
+    }
+
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .img-preview {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 5px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>

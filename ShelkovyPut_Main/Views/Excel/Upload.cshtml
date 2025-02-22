@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Thêm sản phẩm";
+}
+
+<h2>Thêm sản phẩm</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="ImportBrands" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Chọn file excel để thêm</label>
+                    <input type="file" class="form-control" name="file" />
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm brand</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <form asp-action="ImportCategories" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">SChọn file excel để thêm</label>
+                    <input type="file" class="form-control" name="file" />
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm loại</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <form asp-action="ImportProducts" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Chọn file excel để thêm</label>
+                    <input type="file" class="form-control" name="file" />
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+            </form>
+        </div>
+    </div>
+</div>

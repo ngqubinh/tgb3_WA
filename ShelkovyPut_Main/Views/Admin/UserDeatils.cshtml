@@ -1,0 +1,113 @@
+﻿@model Application.ViewModels.User.ProfileVM
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết người dùng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 700px;
+            margin-top: 50px;
+        }
+
+        .user-details-container {
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .user-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #007bff;
+        }
+
+        .user-info {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .user-info strong {
+            display: inline-block;
+            width: 150px;
+            color: #555;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .status.positive {
+            color: #28a745; /* Green */
+        }
+
+        .status.negative {
+            color: #dc3545; /* Red */
+        }
+
+        .btn-custom {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="user-details-container text-center">
+            <h2>Chi tiết người dùng</h2>
+            @* <img src="@Model.ImageUrl" alt="User Image" class="user-image" /> *@
+            <div class="user-info"><strong>Họ tên:</strong> @Model.FullName</div>
+            <div class="user-info"><strong>Email:</strong> @Model.Email</div>
+            <div class="user-info"><strong>Tên tài khoản:</strong> @Model.UserName</div>
+            <div class="user-info"><strong>Số điện thoại:</strong> @Model.PhoneNumber</div>
+            <div class="user-info"><strong>Ngày tạo:</strong> @String.Format("{0:dd/MM/yyyy}", Model.CreatedDate)</div>
+            <div class="user-info"><strong>Vai trò:</strong> @Model.Role</div>
+            <div class="user-info">
+                <strong>Khóa tài khoản:</strong>
+                <span class="status @(Model.IsLockedOut ? "negative" : "positive")">
+                    @(Model.IsLockedOut ? "Có" : "Không")
+                </span>
+            </div>
+            <div class="user-info">
+                <strong>Xác nhận email:</strong>
+                <span class="status @(Model.IsEmailConfirmed ? "positive" : "negative")">
+                    @(Model.IsEmailConfirmed ? "Đã xác nhận" : "Chưa xác nhận")
+                </span>
+            </div>
+            <div class="user-info">
+                <strong>Xác nhận số điện thoại:</strong>
+                <span class="status @(Model.IsPhoneNumberConfirmed ? "positive" : "negative")">
+                    @(Model.IsPhoneNumberConfirmed ? "Đã xác nhận" : "Chưa xác nhận")
+                </span>
+            </div>
+
+            <a asp-controller="Admin" asp-action="EditUserRole" asp-route-userId="@Model.Id" class="btn btn-primary btn-custom">Chỉnh sửa quyền</a>
+            <form asp-action="LockUser" asp-controller="Admin" method="post" class="d-inline-block w-100">
+                <input type="hidden" name="userId" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger btn-custom">Khóa tài khoản</button>
+            </form>
+            <form asp-action="UnlockUser" asp-controller="Admin" method="post" class="d-inline-block w-100">
+                <input type="hidden" name="userId" value="@Model.Id" />
+                <button type="submit" class="btn btn-success btn-custom">Mở khóa tài khoản</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

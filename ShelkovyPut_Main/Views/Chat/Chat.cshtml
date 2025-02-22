@@ -1,0 +1,202 @@
+﻿@* <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div>
+        <script>
+            console.log("User Email: @ViewBag.UserEmail");
+            console.log("Admin ID: @ViewBag.AdminID");
+        </script>
+
+        @if (ViewBag.UserEmail == "nguyenquocbinh214@gmail.com")
+        {
+            <h1>Admin Chat</h1>
+            <div id="chatBoxAdmin"></div>
+            <div>
+                <label for="userSelect">Reply to:</label>
+                <select id="userSelect"></select>
+            </div>
+            <script>
+                var adminID = '@ViewBag.AdminID'; // Admin ID
+                var connection = new WebSocket("ws://localhost:8080/ws?userID=" + encodeURIComponent(adminID) + "&role=admin");
+                var users = new Set();
+
+                connection.onopen = function() {
+                    console.log("Connected to chat server as admin " + adminID);
+                };
+
+                connection.onmessage = function(event) {
+                    var messageParts = event.data.split(": ");
+                    var userID = messageParts[0];
+                    var userMessage = messageParts[1];
+
+                    if (!users.has(userID)) {
+                        users.add(userID);
+                        $("#userSelect").append(new Option(userID, userID));
+                    }
+
+                    $("#chatBoxAdmin").append("<p><strong>" + userID + ":</strong> " + userMessage + "</p>");
+                };
+
+                $(document).on('click', '#sendButton', function() {
+                    var reply = $("#message").val();
+                    var selectedUserID = $("#userSelect").val();
+
+                    if (reply && selectedUserID) {
+                        var modifiedMessage = selectedUserID + ": " + reply;
+                        if (connection.readyState === WebSocket.OPEN) {
+                            connection.send(modifiedMessage);
+                            console.log("Message sent: " + modifiedMessage);
+                            $("#chatBoxAdmin").append("<p><strong>" + adminID + ":</strong> " + reply + "</p>");
+                            $("#message").val("").focus();
+                        } else {
+                            console.log("WebSocket not open");
+                        }
+                    }
+                });
+            </script>
+        }
+        else
+        {
+            <h1>User Chat</h1>
+            <div id="chatBoxUser"></div>
+            <script>
+                var userID = '@ViewBag.UserEmail'; // User email
+                var connection = new WebSocket("ws://localhost:8080/ws?userID=" + encodeURIComponent(userID) + "&role=user");
+
+                connection.onopen = function() {
+                    console.log("Connected to chat server as user " + userID);
+                };
+
+                connection.onmessage = function(event) {
+                    var message = event.data;
+                    $("#chatBoxUser").append("<p>" + message + "</p>");
+                };
+
+                $(document).on('click', '#sendButton', function() {
+                    var message = $("#message").val();
+                    if (message) {
+                        if (connection.readyState === WebSocket.OPEN) {
+                            connection.send(message);
+                            console.log("Message sent: " + message);
+                            $("#chatBoxUser").append("<p><strong>" + userID + ":</strong> " + message + "</p>");
+                            $("#message").val("").focus();
+                        } else {
+                            console.log("WebSocket not open");
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+    <div>
+        <input type="text" id="message" placeholder="Enter your message" />
+        <button id="sendButton">Send</button>
+    </div>
+</body>
+</html> *@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div>
+        <script>
+            console.log("User Email: @ViewBag.UserEmail");
+            console.log("Admin ID: @ViewBag.AdminID");
+        </script>
+
+        @if (ViewBag.UserEmail == "nguyenquocbinh214@gmail.com")
+        {
+            <h1>Admin Chat</h1>
+            <div id="chatBoxAdmin"></div>
+            <div>
+                <label for="userSelect">Reply to:</label>
+                <select id="userSelect"></select>
+            </div>
+            <script>
+                var adminID = '@ViewBag.AdminID'; // Admin ID
+                var connection = new WebSocket("ws://localhost:8080/ws?userID=" + encodeURIComponent(adminID) + "&role=admin");
+                var users = new Set();
+
+                connection.onopen = function() {
+                    console.log("Connected to chat server as admin " + adminID);
+                };
+
+                connection.onmessage = function(event) {
+                    var messageParts = event.data.split(": ");
+                    var userID = messageParts[0];
+                    var userMessage = messageParts[1];
+
+                    if (!users.has(userID)) {
+                        users.add(userID);
+                        $("#userSelect").append(new Option(userID, userID));
+                    }
+
+                    $("#chatBoxAdmin").append("<p><strong>" + userID + ":</strong> " + userMessage + "</p>");
+                };
+
+                $(document).on('click', '#sendButton', function() {
+                    var reply = $("#message").val();
+                    var selectedUserID = $("#userSelect").val();
+
+                    if (reply && selectedUserID) {
+                        var modifiedMessage = selectedUserID + ": " + reply;
+                        if (connection.readyState === WebSocket.OPEN) {
+                            connection.send(modifiedMessage);
+                            console.log("Message sent: " + modifiedMessage);
+                            $("#chatBoxAdmin").append("<p><strong>Admin:</strong> " + reply + "</p>");
+                            $("#message").val("").focus();
+                        } else {
+                            console.log("WebSocket not open");
+                        }
+                    }
+                });
+            </script>
+        }
+        else
+        {
+            <h1>User Chat</h1>
+            <div id="chatBoxUser"></div>
+            <script>
+                var userID = '@ViewBag.UserEmail'; // User email
+                var connection = new WebSocket("ws://localhost:8080/ws?userID=" + encodeURIComponent(userID) + "&role=user");
+
+                connection.onopen = function() {
+                    console.log("Connected to chat server as user " + userID);
+                };
+
+                connection.onmessage = function(event) {
+                    var message = event.data;
+                    $("#chatBoxUser").append("<p>" + message + "</p>");
+                };
+
+                $(document).on('click', '#sendButton', function() {
+                    var message = $("#message").val();
+                    if (message) {
+                        if (connection.readyState === WebSocket.OPEN) {
+                            connection.send(message);
+                            console.log("Message sent: " + message);
+                            $("#chatBoxUser").append("<p><strong>User:</strong> " + message + "</p>");
+                            $("#message").val("").focus();
+                        } else {
+                            console.log("WebSocket not open");
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+    <div>
+        <input type="text" id="message" placeholder="Enter your message" />
+        <button id="sendButton">Send</button>
+    </div>
+</body>
+</html>

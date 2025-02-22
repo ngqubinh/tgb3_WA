@@ -1,0 +1,21 @@
+@model IEnumerable<Domain.Models.Management.OMessage>
+
+<h1>Customer Chat</h1>
+<div id="messagesList">
+    @foreach (var message in Model)
+    {
+        <div class="list-group-item">
+            <strong>@message.User?.UserName</strong>: @message.Message
+        </div>
+    }
+</div>
+
+<form id="messageForm">
+    <input type="text" id="messageInput" placeholder="Type your message here" />
+    <button id="sendButton" type="submit">Send</button>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script src="~/js/chat.js"></script>
+}

@@ -1,0 +1,72 @@
+﻿@model List<Application.ViewModels.Order.UnshippedOrderVM>
+
+@{
+    ViewData["Title"] = "Unshipped Orders";
+}
+
+<h2>Unshipped Orders</h2>
+
+<form asp-action="AssignShipperToOrders" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Customer Name</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td><input type="checkbox" name="selectedOrders[@i].IsSelectedForShipping" value="true" /></td>
+                    <td>@Model[i].OrderId</td>
+                    <td>@Model[i].OrderDate.ToString("dd-MM-yyyy")</td>
+                    <td>@Model[i].CustomerName</td>
+                    <td>@Model[i].TotalAmount VNĐ</td>
+                    <input type="hidden" name="selectedOrders[@i].OrderId" value="@Model[i].OrderId" />
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Assign Shipper</button>
+</form>
+
+
+@* Để dành sau này có thể xài cho ông admin *@
+@* <form asp-action="AssignShipperToOrders" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Customer Name</th>
+                <th>Total Amount</th>
+                <th>Shipper</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++) {
+                <tr>
+                    <td><input type="checkbox" name="selectedOrders[@i].IsSelectedForShipping" value="true" /></td>
+                    <td>@Model[i].OrderId</td>
+                    <td>@Model[i].OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td>@Model[i].CustomerName</td>
+                    <td>@Model[i].TotalAmount</td>
+                    <td>
+                        <select name="selectedOrders[@i].ShipperId" class="form-control">
+                            @foreach (var shipper in ViewBag.Shippers) {
+                                <option value="@shipper.Id">@shipper.Email</option>
+                            }
+                        </select>
+                    </td>
+                    <input type="hidden" name="selectedOrders[@i].OrderId" value="@Model[i].OrderId" />
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Assign Shipper</button>
+</form> *@

@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .admin-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 5px;   
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .admin-feature:hover {
+                background-color: #f8f9fa;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+        .admin-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+            .admin-icon img {
+                width: 20px;
+                height: 20px; 
+            }
+
+        .admin-feature-title {
+            font-size: 10 px; 
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">HỆ THỐNG QUẢN LÝ thegoatboy3.thrift</h1>
+        <span style="color:red; text-align:center;">Lưu ý chỉ có người dùng với vai trò quản lý được phép truy cập trang này.</span>
+        <div class="row">
+            <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Size" asp-action="Size">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/size-guide.png" alt="Quản lý danh size">
+                    </div>
+                    <div class="admin-feature-title">Size</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Brand" asp-action="Brand">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/brand.png" alt="Quản lý brand">
+                    </div>
+                    <div class="admin-feature-title">Brand</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Category" asp-action="Category">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/application.png" alt="Quản lý danh mục">
+                    </div>
+                    <div class="admin-feature-title">Danh mục</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Product" asp-action="Product">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/product.png" alt="Quản lý sản phẩm">
+                    </div>
+                    <div class="admin-feature-title">Sản phẩm</div>
+                </a>
+            </div>
+            @if(User.IsInRole("ADMIN"))
+            {
+                <div class="col-md-3">
+                    <a class="admin-feature" asp-controller="Admin" asp-action="GetAllUsers">
+                        <div class="admin-icon">
+                            <img src="~/uploads/folder.png" alt="Quản lý người dùng">
+                        </div>
+                        <div class="admin-feature-title">Người dùng</div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a class="admin-feature" asp-controller="Admin" asp-action="AssignOrders">
+                        <div class="admin-icon">
+                            <img src="~/uploads/folder.png" alt="Quản lý nhân viên">
+                        </div>
+                        <div class="admin-feature-title">Nhân viên</div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Admin" asp-action="AllOrders">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/commercial.png" alt="Quản lý đơn hàng">
+                    </div>
+                    <div class="admin-feature-title">Đơn hàng</div>
+                </a>
+            </div>
+            }
+            
+            @if(User.IsInRole("STAFF"))
+            {
+                <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Shipper" asp-action="ViewTasks">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/commercial.png" alt="Quản lý đơn hàng">
+                    </div>
+                    <div class="admin-feature-title">Nhiệm vụ</div>
+                </a>
+            </div>
+            }
+            <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Stock" asp-action="Stock">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/warehouse.png" alt="Quản lý kho hàng">
+                    </div>
+                    <div class="admin-feature-title">Kho hàng</div>
+                </a>
+            </div>
+            @if(User.IsInRole("ADMIN"))
+            {
+                <div class="col-md-3">
+                    <a class="admin-feature" asp-controller="Admin" asp-action="GetOrderStatistics">
+                        <div class="admin-icon">
+                            <img src="~/uploads/icons/report.png" alt="Thống kê">
+                        </div>
+                        <div class="admin-feature-title">Thống kê</div>
+                    </a>
+                </div>
+            }
+            <div class="col-md-3">
+                <a class="admin-feature" asp-controller="Home" asp-action="Index">
+                    <div class="admin-icon">
+                        <img src="~/uploads/icons/logout.png" alt="Trở về">
+                    </div>
+                    <div class="admin-feature-title">Thoát</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

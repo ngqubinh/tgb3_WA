@@ -1,0 +1,98 @@
+﻿@using Domain.Models.Management;
+@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Quản lý danh mục";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Quản lý danh mục sản phẩm</h1>
+
+    <p class="text-center">
+        <a asp-action="CreateCategory" class="btn btn-primary">Thêm mới</a>
+    </p>
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Tên danh mục</th>
+                <th>Ngày tạo</th>
+                <th>Người tạo</th>
+                <th>Công cụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User!.Email)</td>
+                    <td>
+                        <a asp-action="EditCategory" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Chỉnh sửa</a>                        
+                        <a asp-action="DeleteCategory" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Dashboard", "Admin")" class="btn btn-secondary btn-lg">Quay lại</a>
+    </div>
+</div>
+
+<style>
+    .container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #343a40;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .btn-warning, .btn-info, .btn-danger {
+        margin: 0 5px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+</style>

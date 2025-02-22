@@ -1,0 +1,69 @@
+@model IEnumerable<Application.ViewModels.Order.BrandSalesVM>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brand Sales Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brand Sales Report</h1>
+    <canvas id="brandSalesChart" width="400" height="200"></canvas>
+
+    <script>
+        var ctx = document.getElementById('brandSalesChart').getContext('2d');
+        var chartData = {
+            labels: @Html.Raw(Json.Serialize(Model.Select(m => m.BrandName))),
+            datasets: [{
+                label: 'Total Sales',
+                data: @Html.Raw(Json.Serialize(Model.Select(m => m.TotalSales))),
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)', // Blue
+                    'rgba(75, 192, 192, 0.6)', // Green
+                    'rgba(153, 102, 255, 0.6)', // Purple
+                    'rgba(255, 206, 86, 0.6)',  // Yellow
+                    'rgba(255, 99, 132, 0.6)',  // Red
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',   // Blue
+                    'rgba(75, 192, 192, 1)',   // Green
+                    'rgba(153, 102, 255, 1)',  // Purple
+                    'rgba(255, 206, 86, 1)',   // Yellow
+                    'rgba(255, 99, 132, 1)',   // Red
+                ],
+                borderWidth: 1
+            }]
+        };
+        var brandSalesChart = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString() + ' USD';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
